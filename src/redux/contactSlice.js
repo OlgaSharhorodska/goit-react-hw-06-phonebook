@@ -11,12 +11,19 @@ const contactSlice = createSlice({
   // Об'єкт редюсерів
   // будемо перераховувати методи які в майбутньому будемо використовувати
   reducers: {
-    addContacts(state, action) {
-      state.contacts.push({
-        id: nanoid(5),
-        name: action.payload.name,
-        number: action.payload.number,
-      });
+    addContacts: {
+      prepare: ({ name, number }) => {
+        return {
+          payload: {
+            id: nanoid(),
+            name,
+            number,
+          },
+        };
+      },
+      reducer: (state, action) => {
+        state.contacts.push(action.payload);
+      },
     },
     deleteContact(state, action) {
       state.contacts = action.payload;
